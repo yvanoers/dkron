@@ -45,12 +45,13 @@ type Agent struct {
 	GRPCServer       DkronGRPCServer
 	GRPCClient       DkronGRPCClient
 
-	serf      *serf.Serf
-	config    *Config
-	eventCh   chan serf.Event
-	sched     *Scheduler
-	candidate *leadership.Candidate
-	ready     bool
+	serf        *serf.Serf
+	config      *Config
+	eventCh     chan serf.Event
+	sched       *Scheduler
+	candidate   *leadership.Candidate
+	ready       bool
+	retryJoinCh chan error
 }
 
 // ProcessorFactory is a function type that creates a new instance
@@ -63,7 +64,10 @@ type Plugins struct {
 }
 
 func NewAgent(config *Config, plugins *Plugins) *Agent {
-	a := &Agent{config: config}
+	a := &Agent{
+		config:      config,
+		retryJoinCh: make(chan error),
+	}
 
 	if plugins != nil {
 		a.ProcessorPlugins = plugins.Processors
@@ -79,7 +83,12 @@ func (a *Agent) Start() error {
 		return fmt.Errorf("agent: Can not setup serf, %s", err)
 	}
 	a.serf = s
-	a.join(a.config.StartJoin, true)
+	// start retry join
+	if len(a.config.RetryJoinLAN) > 0 {
+		a.retryJoinLAN()
+	} else {
+		a.join(a.config.StartJoin, true)
+	}
 
 	if err := initMetrics(a); err != nil {
 		log.Fatal("agent: Can not setup metrics")
@@ -128,6 +137,19 @@ func (a *Agent) Stop() error {
 	}
 
 	return nil
+}
+
+// RetryJoinCh is a channel that transports errors
+// from the retry join process.
+func (a *Agent) RetryJoinCh() <-chan error {
+	return a.retryJoinCh
+}
+
+// JoinLAN is used to have Consul join the inner-DC pool
+// The target address should be another node inside the DC
+// listening on the Serf LAN address
+func (a *Agent) JoinLAN(addrs []string) (int, error) {
+	return a.serf.Join(addrs, true)
 }
 
 // setupSerf is used to create the agent we use
