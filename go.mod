@@ -5,7 +5,7 @@ require (
 	github.com/DataDog/datadog-go v4.0.0+incompatible // indirect
 	github.com/Shopify/sarama v1.28.0
 	github.com/armon/circbuf v0.0.0-20190214190532-5111143e8da2
-	github.com/armon/go-metrics v0.3.6
+	github.com/armon/go-metrics v0.4.1
 	github.com/aws/aws-sdk-go v1.36.31 // indirect
 	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 // indirect
 	github.com/catalinc/hashcash v0.0.0-20161205220751-e6bc29ff4de9 // indirect
