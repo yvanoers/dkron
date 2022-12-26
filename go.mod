@@ -14,7 +14,7 @@ require (
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/expvar v0.0.1
 	github.com/gin-contrib/multitemplate v0.0.0-20200226145339-3e397ee01bc6
-	github.com/gin-gonic/gin v1.7.1
+	github.com/gin-gonic/gin v1.8.2
 	github.com/golang/protobuf v1.5.0
 	github.com/hashicorp/go-discover v0.0.0-20201029210230-738cb3105cd0
 	github.com/hashicorp/go-hclog v0.16.0
@@ -45,13 +45,13 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.7.1
 	github.com/streadway/amqp v1.0.0
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.8.1
 	github.com/tidwall/buntdb v1.2.0
 	github.com/tinylib/msgp v1.1.2 // indirect
-	golang.org/x/net v0.0.0-20210119194325-5f4716e94777
+	golang.org/x/net v0.4.0
 	google.golang.org/api v0.35.0 // indirect
 	google.golang.org/grpc v1.37.0
-	google.golang.org/protobuf v1.26.0
+	google.golang.org/protobuf v1.28.1
 )
 
 go 1.16
